@@ -17,22 +17,22 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function store(Request $request)
-    {
-        $formFields = $request->validate([
-            'name' => 'required|string',
-            'role_id' => 'required|integer', Role::unique('role_id'),
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
-            'password' => ['required', 'confirmed', Password::defaults()]
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $formFields = $request->validate([
+    //         'name' => 'required|string',
+    //         'role_id' => 'required|integer', Role::unique('role_id'),
+    //         'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
+    //         'password' => ['required', 'confirmed', Password::defaults()]
+    //     ]);
 
-        $user = new User();
-        $user->fill($formFields);
-        $user->password = bcrypt($formFields['password']); // Hachage du mot de passe
-        $user->save();
+    //     $user = new User();
+    //     $user->fill($formFields);
+    //     $user->password = bcrypt($formFields['password']); // Hachage du mot de passe
+    //     $user->save();
 
-        return response()->json($user);
-    }
+    //     return response()->json($user);
+    // }
 
     public function show(User $user)
     {
