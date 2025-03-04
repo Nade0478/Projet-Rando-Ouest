@@ -23,6 +23,7 @@ class Place_randoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+
             'name_place_rando' => ['required', 'string', 'max:255'],
             'latitude_place_rando' => ['required', 'numeric'],
             'longitude_place_rando' => ['required', 'numeric'],
@@ -32,27 +33,27 @@ class Place_randoController extends Controller
             'estimated_time_place_rando' => ['required', 'date_format:H:i'],
         ]);
 
-        $filename = "";
+        $image_place_rando = "";
         if ($request->hasFile('image_place_rando')) {
             $filenameWithExt = $request->file('image_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('image_place_rando')->getClientOriginalExtension();
-            $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
-            $path = $request->file('image_place_rando')->storeAs('public/uploads', $filename);
+            $image_place_rando = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('image_place_rando')->storeAs('public/uploads', $image_place_rando);
         } else {
-            $filename = Null;
+            $image_place_rando = Null;
         }
-        $filename = "";
+        $map_place_rando = "";
         if ($request->hasFile('map_place_rando')) {
             $filenameWithExt = $request->file('map_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('map_place_rando')->getClientOriginalExtension();
-            $filename = $filenameWithoutExt . '_' . time(). '.' . $extension;
-            $path = $request->file('map_place_rando')->storeAs('public/uploads', $filename);
+            $map_place_rando = $filenameWithoutExt . '_' . time(). '.' . $extension;
+            $path = $request->file('map_place_rando')->storeAs('public/uploads', $map_place_rando);
         } else {
-            $filename = Null;
+            $map_place_rando = Null;
         }
-        $place_rando = Place_rando::create(array_merge($request->all(), ['image_place_rando' => $filename, 'map_place_rando' => $filename ] ));
+        $place_rando = Place_rando::create(array_merge($request->all(), ['image_place_rando' => $image_place_rando, 'map_place_rando' => $map_place_rando ] ));
         if ($place_rando) {
 
         return response()->json([
@@ -76,36 +77,39 @@ class Place_randoController extends Controller
     public function update(Request $request, Place_rando $place_rando)
     {
         $request->validate([
-            'name_place_rando' => ['required', 'string', 'max:255'],
-            'latitude_place_rando' => ['required', 'numeric'],
-            'longitude_place_rando' => ['required', 'numeric'],
-            'description_place_rando' => ['required', 'text'],
-            'distance_place_rando' => ['required', 'numeric'],
-            'difficulty_place_rando' => ['required', 'in:Facile,Moyen,Difficile'],
-            'estimated_time_place_rando' => ['required', 'date_format:H:i'],
+
+            // 'name_place_rando' => ['required', 'string', 'max:255'],
+            // 'latitude_place_rando' => ['required', 'numeric'],
+            // 'longitude_place_rando' => ['required', 'numeric'],
+            // 'description_place_rando' => ['required', 'text'],
+            // 'distance_place_rando' => ['required', 'numeric'],
+            // 'difficulty_place_rando' => ['required', 'in:Facile,Moyen,Difficile'],
+            // 'estimated_time_place_rando' => ['required', 'date_format:H:i'],
+            // 'image_place_rando' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+            // 'map_place_rando' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
         ]);
 
-        $filename = "";
+        $image_place_rando = "";
         if ($request->hasFile('image_place_rando')) {
             $filenameWithExt = $request->file('image_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('image_place_rando')->getClientOriginalExtension();
-            $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
-            $path = $request->file('image_place_rando')->storeAs('public/uploads', $filename);
+            $image_place_rando = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('image_place_rando')->storeAs('public/uploads', $image_place_rando);
         } else {
-            $filename = Null;
+            $image_place_rando = Null;
         }
-        $filename = "";
+        $map_place_rando = "";
         if ($request->hasFile('map_place_rando')) {
             $filenameWithExt = $request->file('map_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('map_place_rando')->getClientOriginalExtension();
-            $filename = $filenameWithoutExt . '_' . time(). '.' . $extension;
-            $path = $request->file('map_place_rando')->storeAs('public/uploads', $filename);
+            $map_place_rando = $filenameWithoutExt . '_' . time(). '.' . $extension;
+            $path = $request->file('map_place_rando')->storeAs('public/uploads', $map_place_rando);
         } else {
-            $filename = Null;
+            $map_place_rando = Null;
         }
-        $place_rando = Place_rando::create(array_merge($request->all(), ['image_place_rando' => $filename, 'map_place_rando' => $filename ] ));
+        $place_rando ->update(array_merge($request->all(), ['image_place_rando' => $image_place_rando, 'map_place_rando' => $map_place_rando ] ));
         if ($place_rando) {
 
         return response()->json([

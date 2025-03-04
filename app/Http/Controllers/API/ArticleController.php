@@ -66,6 +66,7 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $validatedData = $request->validate([
+            
             'title_article' => ['required','string','max:255'],
             'date_article' => ['required','date'],
             'content_article' => ['required','string'],
