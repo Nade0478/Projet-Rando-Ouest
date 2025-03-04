@@ -28,16 +28,28 @@ class ArticleController extends Controller
             'title_article' => ['required','string','max:255'],
             'date_article' => ['required','date'],
             'content_article' => ['required','string'],
-            'image_article' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'category_id' => ['required','integer'],
             'user_id' => ['required','integer'],
-            'opinion_id' => ['required','integer'],
         ]);
 
+        $filename = "";
+        if ($request->hasFile('image_article')) {
+            $filenameWithExt = $request->file('image_article')->getClientOriginalName();
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('image_article')->getClientOriginalExtension();
+            $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('image_article')->storeAs('public/uploads', $filename);
+        } else {
+            $filename = Null;
+        }
 
-        $article = Article::create($validatedData);
 
-        return response()->json($article, 201);
+        $article = Article::create(array_merge($request->all(), ['photoPlayer' => $filename]));
+
+        return response()->json([
+            'status' => 'Success',
+            'data' => $article,
+        ]);
     }
 
     /**
@@ -57,15 +69,30 @@ class ArticleController extends Controller
             'title_article' => ['required','string','max:255'],
             'date_article' => ['required','date'],
             'content_article' => ['required','string'],
-            'image_article' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'category_id' => ['required','integer'],
             'user_id' => ['required','integer'],
         ]);
 
-        $article->update($validatedData);
+            $filename = "";
+            if ($request->hasFile('image_article')) {
+                $filenameWithExt = $request->file('image_article')->getClientOriginalName();
+                $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('image_article')->getClientOriginalExtension();
+                $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+                $path = $request->file('image_article')->storeAs('public/uploads', $filename);
+            } else {
+                $filename = Null;
+            }
 
-        return response()->json($article, 200);
-    }
+
+            $article = Article::create(array_merge($request->all(), ['photoPlayer' => $filename]));
+
+            return response()->json([
+                'status' => 'Success',
+                'data' => $article,
+            ]);
+        }
+
 
     /**
      * Remove the specified resource from storage.

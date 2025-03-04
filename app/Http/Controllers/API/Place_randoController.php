@@ -26,26 +26,41 @@ class Place_randoController extends Controller
             'name_place_rando' => ['required', 'string', 'max:255'],
             'latitude_place_rando' => ['required', 'numeric'],
             'longitude_place_rando' => ['required', 'numeric'],
-            'description_place_rando' => ['required', 'string'],
-            'horaires_fermeture' => ['required', 'max:100'],
-            'image_place_rando' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'map_place_rando' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'description_place_rando' => ['required', 'text'],
             'distance_place_rando' => ['required', 'numeric'],
             'difficulty_place_rando' => ['required', 'in:Facile,Moyen,Difficile'],
             'estimated_time_place_rando' => ['required', 'date_format:H:i'],
         ]);
 
+        $filename = "";
+        if ($request->hasFile('image_place_rando')) {
+            $filenameWithExt = $request->file('image_place_rando')->getClientOriginalName();
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('image_place_rando')->getClientOriginalExtension();
+            $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('image_place_rando')->storeAs('public/uploads', $filename);
+        } else {
+            $filename = Null;
+        }
+        $filename = "";
+        if ($request->hasFile('map_place_rando')) {
+            $filenameWithExt = $request->file('map_place_rando')->getClientOriginalName();
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('map_place_rando')->getClientOriginalExtension();
+            $filename = $filenameWithoutExt . '_' . time(). '.' . $extension;
+            $path = $request->file('map_place_rando')->storeAs('public/uploads', $filename);
+        } else {
+            $filename = Null;
+        }
+        $place_rando = Place_rando::create(array_merge($request->all(), ['image_place_rando' => $filename, 'map_place_rando' => $filename ] ));
+        if ($place_rando) {
 
-            // On crée une nouvelle place avec les informations fournies
-
-            dd($request);
-            $place_rando = Place_rando::create($request->all());
-            // On retourne les informations de la nouvelle place en JSON
-            return response()->json([
+        return response()->json([
             'status' => 'Success',
             'data' => $place_rando,
-            ]);
+        ]);
         }
+    }
 
     /**
      * Display the specified resource.
@@ -61,32 +76,67 @@ class Place_randoController extends Controller
     public function update(Request $request, Place_rando $place_rando)
     {
         $request->validate([
-            'name_place_rando' => ['required','string','max:255'],
-            'latitude_place_rando' => 'required|numeric',
-            'longitude_place_rando' => 'required|numeric',
-            'description_place_rando' => ['required','string'],
-            'horaires_fermeture' => ['required|max: 100'],
-            'image_place_rando' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'map_place_rando' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'distance_place_rando' => 'required|numeric',
-            'difficulty_place_rando' => ['required|in:Facile,Moyen,Difficile'],
-            'estimated_time_place_rando' => ['required|date_format:H:i'],
-            ]);
-            // On crée une nouvelle place avec les informations fournies
-            $place_rando = Place_rando::create($request->all());
-            // On retourne les informations de la nouvelle place en JSON
-            return response()->json([
+            'name_place_rando' => ['required', 'string', 'max:255'],
+            'latitude_place_rando' => ['required', 'numeric'],
+            'longitude_place_rando' => ['required', 'numeric'],
+            'description_place_rando' => ['required', 'text'],
+            'distance_place_rando' => ['required', 'numeric'],
+            'difficulty_place_rando' => ['required', 'in:Facile,Moyen,Difficile'],
+            'estimated_time_place_rando' => ['required', 'date_format:H:i'],
+        ]);
+
+        $filename = "";
+        if ($request->hasFile('image_place_rando')) {
+            $filenameWithExt = $request->file('image_place_rando')->getClientOriginalName();
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('image_place_rando')->getClientOriginalExtension();
+            $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('image_place_rando')->storeAs('public/uploads', $filename);
+        } else {
+            $filename = Null;
+        }
+        $filename = "";
+        if ($request->hasFile('map_place_rando')) {
+            $filenameWithExt = $request->file('map_place_rando')->getClientOriginalName();
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('map_place_rando')->getClientOriginalExtension();
+            $filename = $filenameWithoutExt . '_' . time(). '.' . $extension;
+            $path = $request->file('map_place_rando')->storeAs('public/uploads', $filename);
+        } else {
+            $filename = Null;
+        }
+        $place_rando = Place_rando::create(array_merge($request->all(), ['image_place_rando' => $filename, 'map_place_rando' => $filename ] ));
+        if ($place_rando) {
+
+        return response()->json([
             'status' => 'Success',
             'data' => $place_rando,
-            ]);
-    }
-
+        ]);
+        }
     /**
      * Remove the specified resource from storage.
      */
+    }
     public function destroy(Place_rando $place_rando)
     {
         $place_rando->delete();
         return response()->json(null, 204);
     }
+// {"conversationId":"ee274cb3-b8e9-49d3-9a37-5f5df5c5c873","source":"instruct"}
+
+    /**
+     * Handle file upload and return the filename.
+     */
+//     private function handleFileUpload(Request $request, $fieldName)
+//     {
+//         if ($request->hasFile($fieldName)) {
+//             $filenameWithExt = $request->file($fieldName)->getClientOriginalName();
+//             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+//             $extension = $request->file($fieldName)->getClientOriginalExtension();
+//             $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+//             $path = $request->file($fieldName)->storeAs('public/uploads', $filename);
+//             return $filename;
+//         }
+//         return null;
+//     }
 }
