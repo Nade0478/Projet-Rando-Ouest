@@ -27,13 +27,13 @@ class Place_randoController extends Controller
             'name_place_rando' => ['required', 'string', 'max:255'],
             'latitude_place_rando' => ['required', 'numeric'],
             'longitude_place_rando' => ['required', 'numeric'],
-            'description_place_rando' => ['required', 'text'],
+            'description_place_rando' => ['required', 'string'],
             'distance_place_rando' => ['required', 'numeric'],
             'difficulty_place_rando' => ['required', 'in:Facile,Moyen,Difficile'],
             'estimated_time_place_rando' => ['required', 'date_format:H:i'],
         ]);
 
-        $image_place_rando = "";
+        $image_place_rando = "image_place_rando";
         if ($request->hasFile('image_place_rando')) {
             $filenameWithExt = $request->file('image_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -43,7 +43,7 @@ class Place_randoController extends Controller
         } else {
             $image_place_rando = Null;
         }
-        $map_place_rando = "";
+        $map_place_rando = "map_place_rando";
         if ($request->hasFile('map_place_rando')) {
             $filenameWithExt = $request->file('map_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -78,18 +78,18 @@ class Place_randoController extends Controller
     {
         $request->validate([
 
-            // 'name_place_rando' => ['required', 'string', 'max:255'],
-            // 'latitude_place_rando' => ['required', 'numeric'],
-            // 'longitude_place_rando' => ['required', 'numeric'],
-            // 'description_place_rando' => ['required', 'text'],
-            // 'distance_place_rando' => ['required', 'numeric'],
-            // 'difficulty_place_rando' => ['required', 'in:Facile,Moyen,Difficile'],
-            // 'estimated_time_place_rando' => ['required', 'date_format:H:i'],
-            // 'image_place_rando' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
-            // 'map_place_rando' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+            'name_place_rando' => ['required', 'string', 'max:255'],
+            'latitude_place_rando' => ['required', 'numeric'],
+            'longitude_place_rando' => ['required', 'numeric'],
+            'description_place_rando' => ['required', 'text'],
+            'distance_place_rando' => ['required', 'numeric'],
+            'difficulty_place_rando' => ['required', 'in:Facile,Moyen,Difficile'],
+            'estimated_time_place_rando' => ['required', 'date_format:H:i'],
+            'image_place_rando' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+            'map_place_rando' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
         ]);
 
-        $image_place_rando = "";
+        $image_place_rando = "image_place_rando";
         if ($request->hasFile('image_place_rando')) {
             $filenameWithExt = $request->file('image_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -99,7 +99,7 @@ class Place_randoController extends Controller
         } else {
             $image_place_rando = Null;
         }
-        $map_place_rando = "";
+        $map_place_rando = "map_place_rando";
         if ($request->hasFile('map_place_rando')) {
             $filenameWithExt = $request->file('map_place_rando')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
