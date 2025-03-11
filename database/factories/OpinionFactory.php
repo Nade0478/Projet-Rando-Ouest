@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\Place_rando;
+use App\Models\Place;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +20,7 @@ class OpinionFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'place_rando_id' => Place_rando::factory(),
+            'place_id' => Place::factory(),
             'title_opinion' => $this->faker->sentence(3),
             'content_opinion' => $this->faker->paragraph(3),
             'note_opinion' => $this->faker->numberBetween(1, 5),

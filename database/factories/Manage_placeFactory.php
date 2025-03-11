@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Place_rando;
+use App\Models\Place;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +20,7 @@ class Manage_placeFactory extends Factory
     {
         return [
             'user_id' => rand(1, User::count()),
-            'place_rando_id' => rand(1, Place_rando::count()),
+            'place_id' => rand(1, Place::count()),
         ];
     }
 }

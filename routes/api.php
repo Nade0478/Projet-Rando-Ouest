@@ -8,7 +8,7 @@ use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\OpinionController;
 use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\Place_randoController;
+use App\Http\Controllers\API\PlaceController;
 use App\Http\Controllers\API\Manage_placeController;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -24,8 +24,8 @@ Route::apiResource('admin', UserController::class);
 // route api article
 Route::apiResource('article', ArticleController::class);
 
-// route api place_rando
-Route::apiResource('place_rando', Place_randoController::class);
+// route api place
+Route::apiResource('place', PlaceController::class);
 
 // route api category
 Route::apiResource('category', CategoryController::class);

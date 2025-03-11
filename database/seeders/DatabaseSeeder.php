@@ -8,7 +8,7 @@ use Database\Seeders\UserSeeder;
 use Database\Seeders\ArticleSeeder;
 use Database\Seeders\OpinionSeeder;
 use Database\Seeders\CategorySeeder;
-use Database\Seeders\Place_randoSeeder;
+use Database\Seeders\PlaceSeeder;
 use Database\Seeders\Manage_placeSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([  
+        $this->call([
             RoleSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
             ArticleSeeder::class,
             OpinionSeeder::class,
-            Place_randoSeeder::class,
+            PlaceSeeder::class,
             Manage_placeSeeder::class,
         ]);
 

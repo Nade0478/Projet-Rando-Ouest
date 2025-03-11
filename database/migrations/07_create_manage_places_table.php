@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Place_rando;
+use App\Models\Place;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('manage_places', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('place_rando_id')->constrained()->cascadeOnDelete();
-            $table->primary(['user_id', 'place_rando_id']);
+            $table->foreignId('place_id')->constrained()->cascadeOnDelete();
+            $table->primary(['user_id', 'place_id']);
             $table->timestamps();
         });
     }

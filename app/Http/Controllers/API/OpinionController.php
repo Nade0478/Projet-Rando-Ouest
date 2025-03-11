@@ -26,7 +26,7 @@ class OpinionController extends Controller
             'title_opinion' => 'required', 'string', 'max: 255',
             'content_opinion' => 'required', 'text', 'max:255',
             'note_opinion' => 'required', 'integer', 'between:1,5',
-            'place_rando_id' => ['required', 'integer'],
+            'place_id' => ['required', 'integer'],
             'user_id' => ['required', 'integer'],
         ]);
 
@@ -50,7 +50,7 @@ class OpinionController extends Controller
             'title_opinion' => 'string|max:255',
             'content_opinion' => 'string|max:255',
             'note_opinion' => 'integer|between:1,5',
-            'place_rando_id' => 'integer',
+            'place_id' => 'integer',
             'user_id' => 'integer',
         ]);
 
