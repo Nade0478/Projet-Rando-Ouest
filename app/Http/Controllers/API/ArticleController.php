@@ -13,8 +13,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::with(['category', 'user'])->paginate(10);
-
+        $articles = Article::with(['category', 'user'])->paginate(50);
         return response()->json($articles, 200);
     }
 
@@ -44,7 +43,7 @@ class ArticleController extends Controller
         }
 
 
-        $article = Article::create(array_merge($request->all(), ['photoPlayer' => $filename]));
+        $article = Article::create(array_merge($request->all(), ['image_article' => $filename]));
 
         return response()->json([
             'status' => 'Success',
@@ -66,7 +65,7 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $validatedData = $request->validate([
-            
+
             'title_article' => ['required','string','max:255'],
             'date_article' => ['required','date'],
             'content_article' => ['required','string'],
@@ -86,7 +85,7 @@ class ArticleController extends Controller
             }
 
 
-            $article = Article::create(array_merge($request->all(), ['photoPlayer' => $filename]));
+            $article = Article::create(array_merge($request->all(), ['image_article' => $filename]));
 
             return response()->json([
                 'status' => 'Success',

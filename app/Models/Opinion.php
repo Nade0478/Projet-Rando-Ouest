@@ -12,7 +12,7 @@ class Opinion extends Model
     use HasFactory;
     protected $fillable = ['title_opinion', 'content_opinion', 'note_opinion', 'user_id','place_id'];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

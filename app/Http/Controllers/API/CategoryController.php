@@ -13,7 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        $categories = Category::all();
+        return response()->json($categories, 200);
     }
 
     /**
@@ -25,7 +26,12 @@ class CategoryController extends Controller
             'name_category' => ['required','string','max:255'],
         ]);
 
-        return Category::create($request->all());
+        $category = Category::create(array_merge($request->all(),));
+
+        return response()->json([
+            'status' => 'Success',
+            'data' => $category,
+        ]);
     }
 
     /**
@@ -33,7 +39,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return $category;
+        return response()->json($category, 200);
     }
 
     /**
@@ -57,6 +63,6 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return response()->noContent();
+        return response()->json(null, 204);
     }
-}
+    }

@@ -13,8 +13,8 @@ class OpinionController extends Controller
      */
     public function index()
     {
-        return Opinion::all();
-
+        $opinions = Opinion::with(['place', 'user'])->paginate(50);
+        return response()->json($opinions, 200);
     }
 
     /**
@@ -30,7 +30,12 @@ class OpinionController extends Controller
             'user_id' => ['required', 'integer'],
         ]);
 
-        return Opinion::create($validatedData);
+        $opinion = Opinion::create(array_merge($request->all(),));
+
+        return response()->json([
+            'status' => 'Success',
+            'data' => $opinion,
+        ]);
     }
 
     /**
@@ -38,7 +43,7 @@ class OpinionController extends Controller
      */
     public function show(Opinion $opinion)
     {
-        return $opinion;
+        return response()->json($opinion, 200);
     }
 
     /**
@@ -54,7 +59,7 @@ class OpinionController extends Controller
             'user_id' => 'integer',
         ]);
 
-        $opinion->update($validatedData);
+        $opinion->update($request->all());
 
         return $opinion;
     }
@@ -66,6 +71,6 @@ class OpinionController extends Controller
     {
         $opinion->delete();
 
-        return response()->noContent();
+        return response()->json(null, 204);
     }
 }

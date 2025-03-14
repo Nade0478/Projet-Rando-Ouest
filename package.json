@@ -15,6 +15,7 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
+        "emailjs-com": "^3.2.0",
         "leaflet": "^1.9.4"
     }
 }
