@@ -11,9 +11,9 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\PlaceController;
 use App\Http\Controllers\API\Manage_placeController;
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 // route api user
 Route::apiResource('user', UserController::class);
