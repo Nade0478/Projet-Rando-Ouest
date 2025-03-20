@@ -68,18 +68,18 @@ class ArticleController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Article $article)
-    {
-        $validatedData = $request->validate([
-
-            'title_article' => ['required','string','max:255'],
-            'date_article' => ['required','date'],
-            'content_article' => ['required','string'],
-            'category_id' => ['required','integer'],
-            'user_id' => ['required','integer'],
-        ]);
+{
+    $validatedData = $request->validate([
+        'title_article' => ['required', 'string', 'max:255'],
+        'date_article' => ['required', 'date'],
+        'content_article' => ['required', 'string'],
+        'category_id' => ['required', 'integer'],
+        'user_id' => ['required', 'integer'],
+        'image_article' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10000'],
+    ]);
 
     // Gestion de l'image
-    $filename = $article->image_article; // Conserver l'ancienne image
+    $filename = $article->image_article; // Conserver l'ancienne image si aucune nouvelle n'est envoyée
     if ($request->hasFile('image_article')) {
         $filenameWithExt = $request->file('image_article')->getClientOriginalName();
         $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -88,7 +88,7 @@ class ArticleController extends Controller
         $request->file('image_article')->storeAs('public/uploads', $filename);
     }
 
-    // Mise à jour des données
+    // Mise à jour de l'article
     $article->update(array_merge($validatedData, [
         'image_article' => $filename,
     ]));
@@ -96,10 +96,8 @@ class ArticleController extends Controller
     return response()->json([
         'status' => 'Success',
         'data' => $article,
-    ], 200);
+    ]);
 }
-
-
     /**
      * Remove the specified resource from storage.
      */
