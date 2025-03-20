@@ -43,7 +43,12 @@ class ArticleController extends Controller
         }
 
 
-        $article = Article::create(array_merge($request->all(), ['image_article' => $filename]));
+        $article = Article::create(array_merge(
+            $validatedData,
+             [
+                'image_article' => $filename ? asset('storage/uploads/' . $filename) : null,
+            ]
+        ));
 
         return response()->json([
             'status' => 'Success',
@@ -73,25 +78,26 @@ class ArticleController extends Controller
             'user_id' => ['required','integer'],
         ]);
 
-            $filename = "";
-            if ($request->hasFile('image_article')) {
-                $filenameWithExt = $request->file('image_article')->getClientOriginalName();
-                $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $request->file('image_article')->getClientOriginalExtension();
-                $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
-                $path = $request->file('image_article')->storeAs('public/uploads', $filename);
-            } else {
-                $filename = Null;
-            }
+    // Gestion de l'image
+    $filename = $article->image_article; // Conserver l'ancienne image
+    if ($request->hasFile('image_article')) {
+        $filenameWithExt = $request->file('image_article')->getClientOriginalName();
+        $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $extension = $request->file('image_article')->getClientOriginalExtension();
+        $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+        $request->file('image_article')->storeAs('public/uploads', $filename);
+    }
 
+    // Mise à jour des données
+    $article->update(array_merge($validatedData, [
+        'image_article' => $filename,
+    ]));
 
-            $article = Article::create(array_merge($request->all(), ['image_article' => $filename]));
-
-            return response()->json([
-                'status' => 'Success',
-                'data' => $article,
-            ]);
-        }
+    return response()->json([
+        'status' => 'Success',
+        'data' => $article,
+    ], 200);
+}
 
 
     /**

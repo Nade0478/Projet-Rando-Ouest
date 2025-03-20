@@ -111,7 +111,7 @@ class PlaceController extends Controller
             $map_placeWithoutExt = pathinfo($map_placeWithExt, PATHINFO_FILENAME);
             $extension = $request->file('map_place')->getClientOriginalExtension();
             $map_place = $map_placeWithoutExt . '_' . time() . '.' . $extension;
-            $request->file('map_place')->storeAs('public/uploads', $map_place);
+            $request->file('map_place')->storeAs('storage/uploads/', $map_place);
         } else {
             $map_place = null;
         }
