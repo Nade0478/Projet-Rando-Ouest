@@ -1996,7 +1996,7 @@
                 "ext-mongodb": "^1.3",
                 "ext-zip": "*",
                 "friendsofphp/php-cs-fixer": "^3.5",
-                "google/cloud-storage": "^1.23",
+                "google/cloud-": "^1.23",
                 "guzzlehttp/psr7": "^2.6",
                 "microsoft/azure-storage-blob": "^1.1",
                 "mongodb/mongodb": "^1.2",

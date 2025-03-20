@@ -21,47 +21,53 @@ class PlaceController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name_place' => ['required', 'string', 'max:255'],
-            'latitude_place' => ['required', 'numeric'],
-            'longitude_place' => ['required', 'numeric'],
-            'description_place' => ['required', 'string', 'max:1000'],
-            'distance_place' => ['required', 'numeric'],
-            'difficulty_place' => ['required', 'in:Facile,Moyen,Difficile'],
-            'estimated_time_place' => ['required', 'date_format:H:i'],
-            'image_place' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
-            'map_place' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
-        ]);
+{
+    $validatedData = $request->validate([
+        'name_place' => ['required', 'string', 'max:255'],
+        'latitude_place' => ['required', 'numeric'],
+        'longitude_place' => ['required', 'numeric'],
+        'description_place' => ['required', 'string', 'max:1000'],
+        'distance_place' => ['required', 'numeric'],
+        'difficulty_place' => ['required', 'in:Facile,Moyen,Difficile'],
+        'estimated_time_place' => ['required', 'date_format:H:i'],
+        'image_place' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+        'map_place' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+    ]);
 
-        $image_place = null;
-        if ($request->hasFile('image_place')) {
-            $filenameWithExt = $request->file('image_place')->getClientOriginalName();
-            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('image_place')->getClientOriginalExtension();
-            $image_place = $filenameWithoutExt . '_' . time() . '.' . $extension;
-            $request->file('image_place')->storeAs('public/uploads', $image_place);
-        }
-
-        $map_place = null;
-        if ($request->hasFile('map_place')) {
-            $filenameWithExt = $request->file('map_place')->getClientOriginalName();
-            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('map_place')->getClientOriginalExtension();
-            $map_place = $filenameWithoutExt . '_' . time() . '.' . $extension;
-            $request->file('map_place')->storeAs('public/uploads', $map_place);
-        }
-
-        $place = Place::create(array_merge(
-            $validatedData,
-            ['image_place' => $image_place, 'map_place' => $map_place]
-        ));
-
-        return response()->json([
-            'status' => 'Success',
-            'data' => $place,
-        ]);
+    $filename = "";
+    if ($request->hasFile('image_place')) {
+        $filenameWithExt = $request->file('image_place')->getClientOriginalName();
+        $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $extension = $request->file('image_place')->getClientOriginalExtension();
+        $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+        $path = $request->file('image_place')->storeAs('public/uploads', $filename);
+    } else {
+    $filename = null;
     }
+    $map_place = null;
+    if ($request->hasFile('map_place')) {
+        $filenameWithExt = $request->file('map_place')->getClientOriginalName();
+        $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $extension = $request->file('map_place')->getClientOriginalExtension();
+        $map_place = $filenameWithoutExt . '_' . time() . '.' . $extension;
+        $request->file('map_place')->storeAs('public/uploads', $map_place);
+    } else {
+        $filename = null;
+    }
+
+    $place = Place::create(array_merge(
+        $validatedData,
+        [
+            'image_place' => $filename ? asset('storage/uploads/' . $filename) : null,
+            'map_place' => $map_place ? asset('storage/uploads/' . $map_place) : null,
+        ]
+    ));
+
+    return response()->json([
+        'status' => 'Success',
+        'data' => $place,
+    ]);
+}
 
     /**
      * Display the specified resource.
@@ -88,27 +94,31 @@ class PlaceController extends Controller
             'map_place' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
         ]);
 
-        $image_place = $place->image_place;
+        $filename = "";
         if ($request->hasFile('image_place')) {
             $filenameWithExt = $request->file('image_place')->getClientOriginalName();
             $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('image_place')->getClientOriginalExtension();
-            $image_place = $filenameWithoutExt . '_' . time() . '.' . $extension;
-            $request->file('image_place')->storeAs('public/uploads', $image_place);
+            $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $path = $request->file('image_place')->storeAs('public/uploads', $filename);
+        } else {
+            $filename = null;
         }
 
         $map_place = $place->map_place;
         if ($request->hasFile('map_place')) {
-            $filenameWithExt = $request->file('map_place')->getClientOriginalName();
-            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $map_placeWithExt = $request->file('map_place')->getClientOriginalName();
+            $map_placeWithoutExt = pathinfo($map_placeWithExt, PATHINFO_FILENAME);
             $extension = $request->file('map_place')->getClientOriginalExtension();
-            $map_place = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $map_place = $map_placeWithoutExt . '_' . time() . '.' . $extension;
             $request->file('map_place')->storeAs('public/uploads', $map_place);
+        } else {
+            $map_place = null;
         }
 
         $place->update(array_merge(
             $validatedData,
-            ['image_place' => $image_place, 'map_place' => $map_place]
+            ['image_place' => $filename, 'map_place' => $map_place]
         ));
 
         return response()->json([
