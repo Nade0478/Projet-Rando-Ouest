@@ -20,7 +20,7 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Article $article)
     {
 
         $validatedData = $request->validate([
@@ -29,6 +29,7 @@ class ArticleController extends Controller
             'content_article' => ['required','string'],
             'category_id' => ['required','integer'],
             'user_id' => ['required','integer'],
+            'image_article' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10000'],
         ]);
 
         $filename = "";
@@ -42,11 +43,10 @@ class ArticleController extends Controller
             $filename = Null;
         }
 
-
-        $article = Article::create(array_merge(
+        $article->create(array_merge(
             $validatedData,
              [
-                'image_article' => $filename ? asset('storage/uploads/' . $filename) : null,
+                'image_article' => $filename
             ]
         ));
 
@@ -104,7 +104,6 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
-
         return response()->json(null, 204);
     }
 }

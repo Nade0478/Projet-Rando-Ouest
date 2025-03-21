@@ -20,7 +20,7 @@ class PlaceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Place $place)
 {
     $validatedData = $request->validate([
         'name_place' => ['required', 'string', 'max:255'],
@@ -44,6 +44,7 @@ class PlaceController extends Controller
     } else {
     $filename = null;
     }
+
     $map_place = null;
     if ($request->hasFile('map_place')) {
         $filenameWithExt = $request->file('map_place')->getClientOriginalName();
@@ -55,19 +56,18 @@ class PlaceController extends Controller
         $filename = null;
     }
 
-    $place = Place::create(array_merge(
-        $validatedData,
-        [
-            'image_place' => $filename ? asset('storage/uploads/' . $filename) : null,
-            'map_place' => $map_place ? asset('storage/uploads/' . $map_place) : null,
-        ]
-    ));
+        $place->create(array_merge(
+            $validatedData,
+            [
+                'image_place' => $filename, 'map_place' => $map_place
+            ]
+        ));
 
-    return response()->json([
-        'status' => 'Success',
-        'data' => $place,
-    ]);
-}
+        return response()->json([
+            'status' => 'Success',
+            'data' => $place,
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -102,18 +102,17 @@ class PlaceController extends Controller
             $filename = $filenameWithoutExt . '_' . time() . '.' . $extension;
             $path = $request->file('image_place')->storeAs('public/uploads', $filename);
         } else {
-            $filename = null;
-        }
-
-        $map_place = $place->map_place;
+        $filename = null;
+            }
+        $map_place = null;
         if ($request->hasFile('map_place')) {
-            $map_placeWithExt = $request->file('map_place')->getClientOriginalName();
-            $map_placeWithoutExt = pathinfo($map_placeWithExt, PATHINFO_FILENAME);
+            $filenameWithExt = $request->file('map_place')->getClientOriginalName();
+            $filenameWithoutExt = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('map_place')->getClientOriginalExtension();
-            $map_place = $map_placeWithoutExt . '_' . time() . '.' . $extension;
-            $request->file('map_place')->storeAs('storage/uploads/', $map_place);
+            $map_place = $filenameWithoutExt . '_' . time() . '.' . $extension;
+            $request->file('map_place')->storeAs('public/uploads', $map_place);
         } else {
-            $map_place = null;
+            $filename = null;
         }
 
         $place->update(array_merge(
