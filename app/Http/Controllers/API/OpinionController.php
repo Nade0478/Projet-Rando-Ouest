@@ -41,10 +41,21 @@ class OpinionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Opinion $opinion)
-    {
-        return response()->json($opinion, 200);
+    public function show($id)
+{
+    $opinion = Opinion::with(['place', 'user'])->find($id);
+
+    if (!$opinion) {
+        return response()->json([
+            'error' => 'Avis introuvable',
+            'message' => 'Aucun avis avec cet ID ne figure dans la base de données.',
+            'id_recherché' => $id
+        ], 404);
     }
+
+    return response()->json($opinion, 200);
+}
+
 
     /**
      * Update the specified resource in storage.

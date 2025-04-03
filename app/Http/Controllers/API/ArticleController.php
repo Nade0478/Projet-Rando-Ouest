@@ -45,7 +45,7 @@ class ArticleController extends Controller
 
         $article->create(array_merge(
             $validatedData,
-             [
+            [
                 'image_article' => $filename
             ]
         ));
@@ -59,10 +59,21 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
-    {
-        return response()->json($article, 200);
+    public function show($id)
+{
+    $article = Article::with(['category', 'user'])->find($id);
+
+    if (!$article) {
+        return response()->json([
+            'error' => 'Article introuvable',
+            'message' => 'Aucun article avec cet ID ne figure dans la base de données.',
+            'id_recherché' => $id
+        ], 404);
     }
+
+    return response()->json($article, 200);
+}
+
 
     /**
      * Update the specified resource in storage.
