@@ -17,6 +17,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // route api user
 Route::apiResource('user', UserController::class);
+Route::put('/user/{user}', [UserController::class, 'update']);
+
 
 // route api admin
 Route::apiResource('admin', UserController::class);

@@ -13,22 +13,22 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::all();
-        return response()->json($user);
+        $users = User::all();
+        return response()->json($users);
     }
 
     public function store(Request $request)
     {
         $formFields = $request->validate([
             'name' => 'required|string',
-            'role_id' => 'required|integer', Role::unique('role_id'),
+            'role_id' => ['required', 'integer'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
             'password' => ['required', 'confirmed', Password::defaults()]
         ]);
 
         $user = new User();
         $user->fill($formFields);
-        $user->password = bcrypt($formFields['password']); // Hachage du mot de passe
+        $user->password = bcrypt($formFields['password']);
         $user->save();
 
         return response()->json($user);
@@ -43,14 +43,14 @@ class UserController extends Controller
     {
         $formFields = $request->validate([
             'name' => 'sometimes|string',
-            'role_id' => 'required|integer', Role::unique('role_id'),
+            'role_id' => ['required', 'integer'],
             'email' => ['sometimes', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['sometimes', 'confirmed', Password::defaults()]
         ]);
 
         $user->fill($formFields);
         if (isset($formFields['password'])) {
-            $user->password = bcrypt($formFields['password']); // Hachage du mot de passe
+            $user->password = bcrypt($formFields['password']);
         }
         $user->save();
 
@@ -60,6 +60,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return response()->json(['success' => 'success']);
+        return response()->json(['success' => 'Utilisateur supprimé avec succès']);
     }
 }
