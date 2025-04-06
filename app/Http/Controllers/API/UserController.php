@@ -43,9 +43,8 @@ class UserController extends Controller
     {
         $formFields = $request->validate([
             'name' => 'sometimes|string',
-            'role_id' => ['required', 'integer'],
             'email' => ['sometimes', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
-            'password' => ['sometimes', 'confirmed', Password::defaults()]
+            'password' => ['sometimes', 'confirmed']
         ]);
 
         $user->fill($formFields);
@@ -54,7 +53,10 @@ class UserController extends Controller
         }
         $user->save();
 
-        return response()->json($user);
+        return response()->json([
+            'message' => 'Utilisateur mis à jour avec succès.',
+            'user' => $user
+        ]);
     }
 
     public function destroy(User $user)
