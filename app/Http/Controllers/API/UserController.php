@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
