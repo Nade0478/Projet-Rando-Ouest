@@ -133,8 +133,6 @@ class AuthController extends Controller
         ]);
     }
 
-=======
-
     public function currentUser()
     {
         return response()->json([
@@ -146,5 +144,4 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
     }
->>>>>>> 2bd92c10aaf586c2f79b93da4f80a33dc7a2eb14
 }
