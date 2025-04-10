@@ -132,9 +132,19 @@ class AuthController extends Controller
             'data' => [],
         ]);
     }
-    // public function getCurrentUser()
-    // {
-    //     return JWTAuth::user();
-    // }
 
+=======
+
+    public function currentUser()
+    {
+        return response()->json([
+            'meta' => [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'User fetched successfully!',
+            ],
+            'user' => auth()->user()
+        ]);
+    }
+>>>>>>> 2bd92c10aaf586c2f79b93da4f80a33dc7a2eb14
 }
