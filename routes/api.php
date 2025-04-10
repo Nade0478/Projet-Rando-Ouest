@@ -39,12 +39,13 @@ Route::apiResource('manage_place', Manage_placeController::class);
 // route api role
 Route::apiResource('role', RoleController::class);
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Seulement accessible via le JWT
 Route::middleware('auth:api')->group(function() {
     Route::get('/currentuser', [AuthController::class, 'currentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+

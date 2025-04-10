@@ -132,4 +132,9 @@ class AuthController extends Controller
             'data' => [],
         ]);
     }
+    // public function getCurrentUser()
+    // {
+    //     return JWTAuth::user();
+    // }
+
 }
