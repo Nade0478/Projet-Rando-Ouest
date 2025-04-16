@@ -133,15 +133,45 @@ class AuthController extends Controller
         ]);
     }
 
-    public function currentUser()
-    {
+    public function currentUser(Request $request)
+{
+    try {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if (!$user) {
+            return response()->json([
+                'meta' => [
+                    'code' => 404,
+                    'status' => 'error',
+                    'message' => 'Utilisateur introuvable.',
+                ],
+                'data' => []
+            ], 404);
+        }
+
         return response()->json([
             'meta' => [
                 'code' => 200,
                 'status' => 'success',
-                'message' => 'User fetched successfully!',
+                'message' => 'Utilisateur récupéré avec succès.',
             ],
-            'user' => auth()->user()
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role_id' => $user->role_id,
+            ]
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'meta' => [
+                'code' => 401,
+                'status' => 'error',
+                'message' => 'Token invalide ou utilisateur non authentifié.',
+            ],
+            'data' => []
+        ], 401);
     }
+}
+
 }
