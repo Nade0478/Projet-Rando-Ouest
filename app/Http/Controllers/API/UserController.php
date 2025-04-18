@@ -64,5 +64,5 @@ class UserController extends Controller
         return response()->json(['success' => 'Utilisateur supprimé avec succès']);
     }
 
-    
+
 }

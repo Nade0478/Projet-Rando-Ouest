@@ -47,5 +47,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth:api')->group(function() {
     Route::get('/currentuser', [AuthController::class, 'currentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 'update']);
+
 });
 
