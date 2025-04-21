@@ -10,6 +10,8 @@ use App\Http\Controllers\API\OpinionController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\PlaceController;
 use App\Http\Controllers\API\Manage_placeController;
+use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\AdminMiddleware;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -50,5 +52,18 @@ Route::middleware('auth:api')->group(function() {
 
 Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 'update']);
 
+//Route middlware
+Route::middleware([RoleMiddleware::class.':1'])->group(function () {
+    Route::get('/admin', [UserController::class, 'index']);
 });
 
+Route::middleware([RoleMiddleware::class.':2'])->group(function () {
+    Route::get('/profile', [UserController::class, 'show']);
+});
+
+// Route::middleware([AdminMiddleware::class])->group(function () {
+//     Route::get('/category', [CategoryController::class, 'index']);
+// });
+
+
+});
